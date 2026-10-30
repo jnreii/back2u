@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report a Lost Item — Back2U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--nav bar-->
+<nav class="nav">
+  <a class="nav-logo" href="main_screen.html">Back2U</a>
+  <div class="nav-links">
+    <a class="nav-link active" href="report_lost.html">Report Lost</a>
+    <a class="nav-link" href="report_found.html">Report Found</a>
+    <a class="nav-link" href="my_reports.html">My Matches</a>
+  </div>
+  <div class="nav-actions">
+    <a class="btn" href="login.html">Login</a>
+    <a class="btn btn-dark" href="login.html?mode=signup">Sign Up</a>
+  </div>
+</nav>
+
+<div id="formView">
+  <header class="page-header">
+    <div class="eyebrow">✹ Report a Lost Item</div>
+    <h1 class="serif">Tell us what you're missing</h1>
+    <p class="sub">A photo helps, but every detail you add — especially the small ones — makes it easier for us to confirm a match is really yours.</p>
+  </header>
+
+  <form class="form-shell" id="lostForm">
+
+    <div class="field-group">
+      <label class="field-label">Photo (optional, but recommended)</label>
+      <!--click or drag and drop-->
+      <div class="upload-zone" id="uploadZone">
+        <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg>
+        <div class="u-title">Click to upload, or drag a photo here</div>
+        <div class="u-sub">JPG or PNG — up to 6MB</div>
+        <input type="file" id="photoInput" accept="image/jpeg,image/png" style="display:none">
+      </div>
+
+      <div class="preview-row" id="previewRow" style="display:none;">
+        <div class="preview-thumb" id="previewThumb">
+          <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+        </div>
+        <div class="preview-meta">
+          <div class="fname" id="fileName">photo.jpg</div>
+          <div class="fsize" id="fileSize">—</div>
+        </div>
+        <span class="preview-remove" id="removePhoto">Remove</span>
+      </div>
+
+      <!--rekognition stub-->
+      <div class="rek-status" id="rekStatus" style="display:none;">
+        <span class="rek-dot loading" id="rekDot"></span>
+        <span id="rekText">Analyzing image with AWS Rekognition…</span>
+      </div>
+      <div class="label-chips" id="labelChips"></div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="category">Category</label>
+        <select id="category" required>
+          <option value="">Select a category</option>
+          <option>Wallet / Purse</option>
+          <option>Keys</option>
+          <option>Electronics</option>
+          <option>Bag</option>
+          <option>Clothing / Accessories</option>
+          <option>Documents / Cards</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="color">Colour</label>
+        <input type="text" id="color" placeholder="e.g. Brown, Black" required>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="area">Where did you lose it? (rough area)</label>
+        <input type="text" id="area" placeholder="e.g. Block 3 Canteen" required>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="dateLost">When did you lose it?</label>
+        <input type="date" id="dateLost" required>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="detail">Any distinguishing details?</label>
+      <textarea id="detail" placeholder="A scratch, a sticker, an engraving, what's inside it — anything only you would know. This helps us confirm a match is really yours."></textarea>
+      <div class="field-hint">These details are kept private and only used to help verify your claim if we find a match.</div>
+    </div>
+
+    <button type="submit" class="btn btn-dark btn-lg btn-block" id="submitBtn">Submit Report</button>
+  </form>
+</div>
+
+<!-- hidden until form submits successfully -->
+<div id="confirmView" style="display:none;">
+  <div class="confirm-box">
+    <div class="confirm-icon">✓</div>
+    <h2 class="serif">Report submitted</h2>
+    <p>We've logged your report and will keep watching for a match. You'll get an email the moment something looks promising — you can also check progress anytime from My Matches.</p>
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <a class="btn btn-dark" href="my_reports.html">View My Matches</a>
+      <a class="btn" href="main_screen.html">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="serif" style="font-size:22px;">Back2U</div>
+  <div class="footer-copy">© Back2U</div>
+</footer>
+
+<script src="all.js"></script>
+
+</body>
+</html>

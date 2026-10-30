@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Reports & Matches — Back2U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .page-wrap{max-width:820px; margin:0 auto; padding:150px 24px 100px;}
+
+  .status-pill{
+    font-size:11px; font-weight:600; padding:5px 12px; border-radius:var(--radius-pill);
+    display:inline-flex; align-items:center; gap:6px; text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .status-pill .dot{width:6px; height:6px; border-radius:50%;}
+  .status-active{background:#EEF3EC; color:var(--sage);}
+  .status-active .dot{background:var(--sage);}
+  .status-review{background:#FBF1E3; color:var(--amber);}
+  .status-review .dot{background:var(--amber);}
+  .status-resolved{background:#111; color:#fff;}
+  .status-resolved .dot{background:#fff;}
+
+  .report-card{
+    border:1px solid var(--line); border-radius:var(--radius-md); padding:24px; margin-bottom:20px;
+    background:var(--white);
+  }
+  .report-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+  .report-type{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); margin-bottom:6px;}
+  .report-title{font-size:22px; font-family:'Instrument Serif',serif; font-style:italic;}
+  .report-meta{font-size:13px; color:var(--ink-soft); margin-top:4px;}
+  .report-actions{display:flex; align-items:center; gap:10px;}
+  .icon-btn{
+    width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; color:var(--ink-soft);
+    transition:background .15s ease, color .15s ease;
+  }
+  .icon-btn:hover{background:var(--bg-alt); color:var(--ink);}
+
+  .match-block{
+    margin-top:18px; padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .match-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .match-label{font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em;}
+  .confidence{font-size:12px; font-weight:600;}
+  .conf-high{color:var(--sage);}
+  .conf-mid{color:var(--amber);}
+
+  .match-card{
+    display:flex; gap:14px; align-items:center; background:var(--bg-alt); border-radius:var(--radius-sm); padding:14px;
+  }
+  .match-thumb{
+    width:56px; height:56px; border-radius:8px; background:var(--white); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .match-thumb svg{width:24px; height:24px; stroke:var(--ink-soft); fill:none; stroke-width:1.5;}
+  .match-info{flex:1;}
+  .match-info .m-title{font-size:14px; font-weight:600;}
+  .match-info .m-loc{font-size:12.5px; color:var(--ink-soft);}
+  .match-btns{display:flex; gap:8px;}
+  .match-btns .btn{padding:8px 16px; font-size:12.5px;}
+
+  .review-note{
+    display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft);
+    background:#FBF1E3; padding:12px 14px; border-radius:var(--radius-sm); margin-top:10px;
+  }
+
+  /*headers for grouping reports by status*/
+  .section-label{
+    font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft);
+    margin:36px 0 14px;
+  }
+  .section-label:first-child{ margin-top:0; }
+
+  .empty-state{text-align:center; padding:60px 20px; color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="main_screen.html">Back2U</a>
+  <div class="nav-links">
+    <a class="nav-link" href="report_lost.html">Report Lost</a>
+    <a class="nav-link" href="report_found.html">Report Found</a>
+    <a class="nav-link active" href="my_reports.html">My Matches</a>
+  </div>
+  <div class="nav-actions">
+    <a class="btn" href="staff_login.html">Staff Portal</a>
+    <a class="btn" href="#" onclick="logoutBack2U()">Logout</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <header style="margin-bottom:36px;">
+    <div class="eyebrow">✹ My Reports & Matches</div>
+    <h1 class="serif" style="font-size:44px;">Everything you've reported</h1>
+    <p class="sub" style="margin-top:8px;">Track your reports, review possible matches, and see when a match has been confirmed.</p>
+  </header>
+
+  <div id="reportsList"></div>
+</div>
+
+<footer class="footer">
+  <div class="serif" style="font-size:22px;">Back2U</div>
+  <div class="footer-copy">© Back2U</div>
+</footer>
+
+<script src="all.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back2U — Lost something? We'll get it back to you.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{
+    overflow-x:hidden;
+    background:linear-gradient(180deg, #FBFAF7 0%, #F7F5F1 100%);
+  }
+
+  /*scattered jpgs hero*/
+  .hero{
+    position:relative;
+    padding:150px 24px 40px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+  .cluster-stage{
+    position:relative;
+    height:660px;
+    max-width:1300px;
+    margin:0 auto;
+  }
+  .item{
+    position:absolute;
+    display:flex; flex-direction:column; gap:5px;
+    will-change:transform, opacity;
+  }
+  .thumb{
+    background:#FFFFFF;
+    border-radius:6px;
+    box-shadow:0 3px 10px -2px rgba(0,0,0,0.15);
+    display:flex; align-items:center; justify-content:center;
+    padding:2px;
+  }
+  .thumb img{ border-radius:2px; }
+  .thumb svg{stroke:var(--ink); fill:none; stroke-width:1.5; opacity:0.6; width:38%; height:38%;}
+  .caption{
+    display:flex; align-items:center; gap:5px;
+    font-family:'Inter', sans-serif; font-size:9.5px; font-weight:500; color:var(--ink-soft);
+  }
+  .caption .dot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+
+  .hero-text{
+    text-align:center;
+    max-width:640px;
+    margin:20px auto 0;
+  }
+  /*text for each picture*/
+  .cluster-caption{
+    position:absolute;
+    top:36%; left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    font-family:'Instrument Serif', serif;
+    font-size:38px;
+    font-style:italic;
+    color:var(--ink);
+    z-index:5;
+    pointer-events:none;
+    line-height:1.15;
+  }
+  .cluster-caption .highlight{
+    position:relative;
+    display:inline-block;
+    background:#C9DEF5;
+    padding:0 10px;
+    border-radius:1px;
+  }
+  .cluster-caption .highlight::before,
+  .cluster-caption .highlight::after{
+    content:'';
+    position:absolute;
+    top:-6px;
+    bottom:-6px;
+    width:2px;
+    background:#1E6FE0;
+  }
+  .cluster-caption .highlight::before{ left:-1px; }
+  .cluster-caption .highlight::after{ right:-1px; }
+  .cluster-caption .handle{
+    position:absolute;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:#1E6FE0;
+  }
+  .cluster-caption .handle.top-left{
+    left:-7px;
+    top:-12px;
+  }
+  .cluster-caption .handle.bottom-right{
+    right:-7px;
+    bottom:-12px;
+  }
+  .hero-text h1{
+    font-size:clamp(72px,10vw,140px);
+    font-weight:400;
+    font-style:italic;
+    line-height:0.92;
+    letter-spacing:-0.01em;
+  }
+  .hero-eyebrow{
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+  .hero-text .sub{
+    margin-top:27px;
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:440px;
+    margin-left:auto; margin-right:auto;
+    line-height:1.55;
+  }
+  .hero-cta{margin-top:40px; display:flex; gap:12px; justify-content:center;}
+  .hero-cta .btn{padding:15px 34px;}
+
+  .row-section{padding:100px 48px; max-width:1440px; margin:0 auto;}
+  .row-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    margin-bottom:12px; flex-wrap:wrap;
+  }
+  .row-head h2{
+    font-size:38px; font-weight:600; letter-spacing:-0.01em;
+  }
+  .row-head .tag-line{
+    font-size:15px; color:var(--ink-soft); margin-top:11px;
+  }
+  .row-nav{display:flex; gap:10px;}
+  .row-nav button{
+    width:40px; height:40px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;
+  }
+  .row-nav button:hover{background:var(--bg-alt);}
+
+  .scroll-row{
+    display:flex; gap:28px; overflow-x:auto; padding:40px 0 12px; scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .scroll-row::-webkit-scrollbar{display:none;}
+  .story-card{flex:0 0 300px; display:flex; flex-direction:column; gap:12px;}
+  .story-img{
+    position:relative; border-radius:var(--radius-md); overflow:hidden;
+    background:linear-gradient(150deg,#F0EFEA,#E4E2DA);
+    height:380px; display:flex; align-items:center; justify-content:center;
+  }
+  .story-img svg{width:81px; height:81px; stroke:var(--ink-soft); opacity:0.3; stroke-width:1.2; fill:none;}
+  .story-card h3{font-family:'Instrument Serif', serif; font-size:26px; font-weight:400;}
+  .story-card .loc{color:var(--ink-soft); font-size:14px;}
+
+  /*footer columns*/
+  .footer h4{font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; color:var(--ink-soft);}
+  .footer-cols{display:flex; gap:64px; flex-wrap:wrap;}
+  .footer-col a{display:block; color:var(--ink); font-size:15px; margin-bottom:12px;}
+  .footer-brand p{color:var(--ink-soft); font-size:14px; max-width:280px; margin:16px 0;}
+
+  @media (max-width:900px){
+    .row-head{align-items:flex-start;}
+    .nav-links .nav-link{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <!--nav bar-->
+<nav class="nav">
+  <a class="nav-logo" href="main_screen.html">Back2U</a>
+  <div class="nav-links">
+    <a class="nav-link" href="report_lost.html">Report Lost</a>
+    <a class="nav-link" href="report_found.html">Report Found</a>
+    <a class="nav-link" href="my_reports.html">My Matches</a>
+  </div>
+  <div class="nav-actions">
+    <a class="btn" href="login.html">Login</a>
+    <a class="btn btn-dark" href="login.html?mode=signup">Sign Up</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="cluster-stage" id="clusterStage">
+    <div class="cluster-caption">
+      Feeling
+      <span class="highlight">lost?
+        <span class="handle top-left"></span>
+        <span class="handle bottom-right"></span>
+      </span>
+    </div>
+    <div class="item" style="left:9px; top:96px;" data-rot="-8" data-vx="-1" data-vy="-0.4">
+      <div class="thumb" style="width:86px; height:86px;">
+        <img src="img/wallet.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FF5F56"></span>wallet.jpeg</div>
+    </div>
+    <div class="item" style="left:159px; top:21px;" data-rot="9" data-vx="-0.4" data-vy="-1">
+      <div class="thumb" style="width:77px; height:122px;">
+        <img src="img/housekeys.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FFBD2E"></span>housekeys.webp</div>
+    </div>
+    <div class="item" style="left:281px; top:114px;" data-rot="-5" data-vx="0" data-vy="-1">
+      <div class="thumb" style="width:132px; height:86px;">
+        <img src="img/airpods.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#F5C518"></span>airpods.webp</div>
+    </div>
+    <div class="item" style="left:61px; top:299px;" data-rot="6" data-vx="-1" data-vy="0.4">
+      <div class="thumb" style="width:95px; height:95px;">
+        <img src="img/umbrella.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#27C93F"></span>umbrella.jpeg</div>
+    </div>
+    <div class="item" style="left:439px; top:14px;" data-rot="-11" data-vx="0.3" data-vy="-1">
+      <div class="thumb" style="width:69px; height:125px;">
+        <img src="img/phone_c.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#4A90D9"></span>phone_c.jpeg</div>
+    </div>
+    <div class="item" style="left:552px; top:48px;" data-rot="8" data-vx="0.6" data-vy="-0.5">
+      <div class="thumb" style="width:144px; height:81px;">
+        <img src="img/glasses.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#9B59B6"></span>glasses.webp</div>
+    </div>
+    <div class="item" style="left:255px; top:307px;" data-rot="-4" data-vx="-0.5" data-vy="0.9">
+      <div class="thumb" style="width:114px; height:114px;">
+        <img src="img/notebook.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#8E8E93"></span>notebook.webp</div>
+    </div>
+    <div class="item" style="left:728px; top:21px;" data-rot="5" data-vx="0.8" data-vy="-0.6">
+      <div class="thumb" style="width:84px; height:132px;">
+        <img src="img/waterbottle.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FF5F56"></span>waterbottle.jpg</div>
+    </div>
+    <div class="item" style="left:842px; top:211px;" data-rot="-9" data-vx="1" data-vy="0.2">
+      <div class="thumb" style="width:65px; height:95px;">
+        <img src="img/keychain.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FFBD2E"></span>keychain.jpg</div>
+    </div>
+    <div class="item" style="left:480px; top:310px;" data-rot="12" data-vx="-0.2" data-vy="1">
+      <div class="thumb" style="width:122px; height:71px;">
+        <img src="img/hairclip.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#F5C518"></span>hairclip.jpeg</div>
+    </div>
+    <div class="item" style="left:948px; top:14px;" data-rot="-6" data-vx="1" data-vy="-0.7">
+      <div class="thumb" style="width:93px; height:144px;">
+        <img src="img/lipbalm.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#27C93F"></span>lipbalm.jpeg</div>
+    </div>
+    <div class="item" style="left:1044px; top:202px;" data-rot="9" data-vx="1" data-vy="0.4">
+      <div class="thumb" style="width:110px; height:84px;">
+        <img src="img/thumbdrive.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#4A90D9"></span>thumbdrive.jpg</div>
+    </div>
+    <div class="item" style="left:650px; top:398px;" data-rot="-7" data-vx="0.3" data-vy="1">
+      <div class="thumb" style="width:99px; height:99px;">
+        <img src="img/ipad.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#9B59B6"></span>ipad.jpeg</div>
+    </div>
+    <div class="item" style="left:150px; top:439px;" data-rot="15" data-vx="-0.7" data-vy="1">
+      <div class="thumb" style="width:128px; height:56px;">
+        <img src="img/clawclip.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FF5F56"></span>clawclip.jpeg</div>
+    </div>
+    <div class="item" style="left:1114px; top:395px;" data-rot="-10" data-vx="0.9" data-vy="0.8">
+      <div class="thumb" style="width:86px; height:86px;">
+        <img src="img/shoebag.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#FFBD2E"></span>shoebag.jpeg</div>
+    </div>
+    <div class="item" style="left:1190px; top:170px;" data-rot="4" data-vx="0" data-vy="-1">
+      <div class="thumb" style="width:81px; height:81px;">
+        <img src="img/volleyball.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#F5C518"></span>volleyball.jpeg</div>
+    </div>
+    <div class="item" style="left:887px; top:377px;" data-rot="-13" data-vx="0.5" data-vy="1">
+      <div class="thumb" style="width:60px; height:86px;">
+        <img src="img/charm.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="caption"><span class="dot" style="background:#27C93F"></span>charm.webp</div>
+    </div>
+  </div>
+
+  <div class="hero-text">
+    <div class="hero-eyebrow">✹ Your Lost & Found system</div>
+    <h1 class="serif">Back2U</h1>
+    <p class="sub">A community-run collection of the things people lost — and found their way back to. Report it, we'll help match it.</p>
+    <div class="hero-cta">
+      <a class="btn btn-dark" href="report_lost.html">Report an Item</a>
+      <a class="btn" href="#recent">See Recent Matches</a>
+    </div>
+  </div>
+</section>
+
+<!-- reunited recently row-->
+<section class="row-section" id="recent">
+  <div class="row-head">
+    <div>
+      <h2 class="serif">Reunited Recently</h2>
+      <div class="tag-line">✹ Real reports, real matches — updated as they happen.</div>
+    </div>
+    <div class="row-nav">
+      <button onclick="scrollRow(-1)" aria-label="Scroll left">←</button>
+      <button onclick="scrollRow(1)" aria-label="Scroll right">→</button>
+    </div>
+  </div>
+
+  <div class="scroll-row" id="scrollRow">
+    <div class="story-card">
+      <div class="story-img">
+        <img src="img/Brown coach wallet.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="pill-row"><span class="pill">Reunited</span><span class="pill">Wallet</span></div>
+      <h3>Brown coach wallet</h3>
+      <div class="loc">Found at Flavours Canteen · 2h ago</div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">
+        <img src="img/snoopy airpods.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="pill-row"><span class="pill">Claimed</span><span class="pill">Earbuds</span></div>
+      <h3>Snoopy airpods</h3>
+      <div class="loc">Found at Triplets · Pending</div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">
+        <img src="img/owala.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="pill-row"><span class="pill">Reunited</span><span class="pill">Bottle</span></div>
+      <h3>White Owala</h3>
+      <div class="loc">Found at TP library · 5h ago</div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">
+        <img src="img/keyring.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="pill-row"><span class="pill">Reunited</span><span class="pill">Keys</span></div>
+      <h3>Keyring with Charm</h3>
+      <div class="loc">Found at seats near block 3 · 1d ago</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="serif" style="font-size:26px; font-weight:600;">Back2U</div>
+    <div class="footer-copy">© Back2U</div>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="report_lost.html">Report a Lost Item</a>
+      <a href="report_found.html">Report a Found Item</a>
+      <a href="my_reports.html">My Reports & Matches</a>
+    </div>
+    <div class="footer-col">
+      <h4>Account</h4>
+      <a href="login.html">Login</a>
+      <a href="login.html?mode=signup">Create Account</a>
+      <a href="staff_login.html">Staff Portal</a>
+    </div>
+  </div>
+</footer>
+
+<script src="all.js"></script>
+
+</body>
+</html>

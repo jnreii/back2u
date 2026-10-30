@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Back2U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .auth-wrap{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:140px 24px 60px;
+  }
+  .auth-card{
+    width:100%; max-width:440px;
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-lg);
+    box-shadow:0 30px 60px -24px rgba(0,0,0,0.12);
+    padding:44px 40px;
+  }
+  .auth-tabs{
+    display:flex; background:var(--bg-alt); border-radius:var(--radius-pill);
+    padding:4px; margin-bottom:32px;
+  }
+  .auth-tab{
+    flex:1; text-align:center; padding:10px 0; font-size:14px; font-weight:600;
+    border-radius:var(--radius-pill); cursor:pointer; color:var(--ink-soft);
+    transition:background .15s ease, color .15s ease;
+  }
+  .auth-tab.active{background:var(--ink); color:var(--white);}
+  .auth-card h1{font-size:34px; font-style:italic; margin-bottom:6px;}
+  .auth-card .sub{font-size:14px; color:var(--ink-soft); margin-bottom:28px;}
+  .row-between{display:flex; justify-content:space-between; align-items:center; font-size:12.5px; margin-bottom:22px;}
+  .row-between a{color:var(--ink); text-decoration:underline;}
+  .check-row{display:flex; align-items:center; gap:8px; color:var(--ink-soft);}
+  .check-row input{width:15px; height:15px;}
+  .switch-line{text-align:center; font-size:14px; color:var(--ink-soft); margin-top:24px;}
+  .switch-line a{color:var(--ink); font-weight:600; cursor:pointer;}
+  /* loading dot*/
+  .auth-status{
+    display:none; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); margin-top:14px;
+  }
+  .auth-status .rek-dot{width:7px; height:7px; border-radius:50%; background:var(--amber); animation:pulse 1s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .form-panel{display:none;}
+  .form-panel.active{display:block;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="main_screen.html">Back2U</a>
+  <div class="nav-links">
+    <a class="nav-link" href="report_lost.html">Report Lost</a>
+    <a class="nav-link" href="report_found.html">Report Found</a>
+    <a class="nav-link" href="my_reports.html">My Matches</a>
+  </div>
+  <div class="nav-actions"></div>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <!--tab switcher-->
+    <div class="auth-tabs">
+      <div class="auth-tab" id="tabLogin" onclick="showPanel('login')">Login</div>
+      <div class="auth-tab" id="tabSignup" onclick="showPanel('signup')">Sign Up</div>
+    </div>
+
+    <!--login panel-->
+    <div class="form-panel" id="panelLogin">
+      <h1 class="serif">Welcome back</h1>
+      <p class="sub">Reconnect with your missing belongings and help others find theirs.</p>
+      <form id="loginForm">
+        <div class="field-group">
+          <label class="field-label" for="loginEmail">Email address</label>
+          <input type="email" id="loginEmail" placeholder="name@email.com" required>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <div class="row-between" style="justify-content:flex-end;">
+          <a
+            href="#"
+            id="forgotPasswordLink"
+          >
+            Forgot password?
+          </a>
+        </div>
+        <button type="submit" class="btn btn-dark btn-lg btn-block" id="loginBtn">Sign In</button>
+        <div class="auth-status" id="loginStatus"></div>
+      </form>
+      <div class="switch-line">New to Back2U? <a onclick="showPanel('signup')">Create an account</a></div>
+    </div>
+
+    <!--signup panel-->
+    <div class="form-panel" id="panelSignup">
+      <h1 class="serif">Join Back2U</h1>
+      <p class="sub">One account to report, track, and get matched — takes under a minute.</p>
+      <form id="signupForm">
+        <div class="field-group">
+          <label class="field-label" for="signupName">Full name</label>
+          <input type="text" id="signupName" placeholder="Your name" required>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="signupEmail">Email address</label>
+          <input type="email" id="signupEmail" placeholder="name@email.com" required>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="At least 8 characters" required minlength="8">
+        </div>
+        <button type="submit" class="btn btn-dark btn-lg btn-block" id="signupBtn">Create Account</button>
+        <div class="auth-status" id="signupStatus"></div>
+      </form>
+      <div class="switch-line">Already have an account? <a onclick="showPanel('login')">Log in</a></div>
+    </div>
+
+    <!--password reset using cognito-->
+    <div class="form-panel" id="panelForgot">
+      <h1 class="serif">Reset your password</h1>
+
+      <p class="sub">
+        Enter your account email and we'll send you a verification code.
+      </p>
+
+      <form id="forgotPasswordForm">
+
+        <div class="field-group">
+          <label
+            class="field-label"
+            for="forgotEmail"
+          >
+            Email address
+          </label>
+
+          <input
+            type="email"
+            id="forgotEmail"
+            placeholder="name@email.com"
+            required
+          >
+        </div>
+
+
+        <div
+          id="forgotCodeFields"
+          style="display:none;"
+        >
+          <div class="field-group">
+            <label
+              class="field-label"
+              for="forgotCode"
+            >
+              Verification code
+            </label>
+
+            <input
+              type="text"
+              id="forgotCode"
+              placeholder="Enter the code from your email"
+            >
+          </div>
+
+          <div class="field-group">
+            <label
+              class="field-label"
+              for="forgotNewPassword"
+            >
+              New password
+            </label>
+
+            <input
+              type="password"
+              id="forgotNewPassword"
+              placeholder="At least 8 characters"
+              minlength="8"
+            >
+          </div>
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-dark btn-lg btn-block"
+          id="forgotPasswordBtn"
+        >
+          Send Verification Code
+        </button>
+
+        <div
+          class="auth-status"
+          id="forgotPasswordStatus"
+        ></div>
+      </form>
+
+
+      <div class="switch-line">
+        <a onclick="showPanel('login')">
+          Back to login
+        </a>
+      </div>
+    </div>
+
+    <!--separate login flow for staff -->
+    <div class="switch-line" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--line);">
+      Venue staff? <a href="staff_login.html">Sign in to the Staff Portal</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="serif" style="font-size:22px;">Back2U</div>
+  <div class="footer-copy">© Back2U</div>
+</footer>
+
+<script src="all.js"></script>
+
+</body>
+</html>

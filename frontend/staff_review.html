@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Review — Back2U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .page-wrap{max-width:920px; margin:0 auto; padding:150px 24px 100px;}
+
+  .staff-badge{
+    display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft);
+    background:var(--bg-alt); padding:8px 16px; border-radius:var(--radius-pill); margin-bottom:20px;
+  }
+  .staff-badge .dot{width:7px; height:7px; border-radius:50%; background:var(--sage);}
+
+  .section-label{
+    font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft);
+    margin:44px 0 16px;
+  }
+
+  .review-card{
+    border:1px solid var(--line); border-radius:var(--radius-md); padding:22px; margin-bottom:20px; background:var(--white);
+  }
+  .review-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+  .review-conf{font-size:13px; font-weight:600; color:var(--amber);}
+
+  .compare-grid{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:stretch;}
+  .compare-col{
+    background:var(--bg-alt); border-radius:var(--radius-sm); padding:16px;
+  }
+  .compare-col .c-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:8px;}
+  .compare-col .c-title{font-size:16px; font-weight:600; margin-bottom:4px;}
+  .compare-col .c-meta{font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;}
+  .compare-col .c-detail{font-size:13px; line-height:1.5; margin-bottom:10px; font-style:italic; color:var(--ink);}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .mini-chip{font-size:10.5px; font-weight:500; padding:4px 9px; border-radius:var(--radius-pill); background:var(--white); border:1px solid var(--line); color:var(--ink-soft);}
+  .vs-divider{display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--ink-soft); font-weight:600;}
+
+  .review-actions{display:flex; gap:10px; margin-top:18px; justify-content:flex-end;}
+
+  /* shows after staff clicks approve/reject */
+  .decision-note{
+    margin-top:14px; font-size:12.5px; padding:10px 14px; border-radius:var(--radius-sm);
+  }
+  .decision-approve{background:#EEF3EC; color:var(--sage);}
+  .decision-reject{background:#FBEAE9; color:#C0463E;}
+
+  .oversight-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  .oversight-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft);
+    padding:10px 12px; border-bottom:1px solid var(--line);
+  }
+  .oversight-table td{padding:12px; border-bottom:1px solid var(--line);}
+  .oversight-table tr:last-child td{border-bottom:none;}
+
+  .empty-state{text-align:center; padding:50px 20px; color:var(--ink-soft); border:1px dashed var(--line); border-radius:var(--radius-md);}
+
+  @media (max-width:700px){
+    .compare-grid{grid-template-columns:1fr;}
+    .vs-divider{padding:4px 0;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="main_screen.html">Back2U</a>
+  <div class="nav-links"></div>
+  <div class="nav-actions">
+    <a class="btn" href="main_screen.html">Exit Staff Portal</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <header style="margin-bottom:8px;">
+    <div class="eyebrow">✹ Staff Portal</div>
+    <h1 class="serif" style="font-size:44px;">Review Queue</h1>
+    <p class="sub" style="margin-top:8px;">These matches were too close to call automatically. Compare both reports and make the judgment call the algorithm couldn't.</p>
+  </header>
+
+  <!--hardcoded venue name-->
+  <div class="staff-badge"><span class="dot"></span>Signed in as Back2U staff</div>
+  <div class="section-label">Pending Review</div>
+  <div id="reviewQueue"></div>
+  <div class="section-label">All Reports at This Venue</div>
+  <table class="oversight-table" id="oversightTable">
+    <thead>
+      <tr><th>Report ID</th><th>Type</th><th>Item</th><th>Status</th><th>Date</th></tr>
+    </thead>
+    <tbody id="oversightBody"></tbody>
+  </table>
+</div>
+
+<footer class="footer">
+  <div class="serif" style="font-size:22px;">Back2U</div>
+  <div class="footer-copy">© Back2U</div>
+</footer>
+
+<script src="all.js"></script>
+
+</body>
+</html>
